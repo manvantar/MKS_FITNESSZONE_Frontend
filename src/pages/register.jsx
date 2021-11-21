@@ -12,7 +12,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import "../scss/loginRegister.scss";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import user from "../services/user";
 import Notification from "../components/employeeForm/Notification";
 const userobject = new user();

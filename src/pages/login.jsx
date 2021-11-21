@@ -9,12 +9,12 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import "../scss/loginRegister.scss";
 import User from "../services/user";
 import auth from "../services/auth";
-import { useHistory } from "react-router";
+// import { useHistory } from "react-router";
 import Notification from "../components/employeeForm/Notification";
 const user = new User();
 
