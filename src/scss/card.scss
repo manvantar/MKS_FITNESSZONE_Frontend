@@ -1,0 +1,21 @@
+.root {
+  min-width: 300px;
+  margin-bottom: 25px;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
+.item{
+  all: unset;
+  display: flex;
+  font-size: medium;
+  font-weight: bold;
+  .name{
+    font-weight: normal;
+    color: #6d6868;
+  }
+}
+
+.cardActions {
+  float: right;
+}

@@ -1,0 +1,30 @@
+.formStyle {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #949090;
+  .paperStyle {
+    height: auto;
+    max-width: 350px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    margin: 10px 0;
+  }
+  .btnstyle {
+    margin: 3px 0;
+  }
+}
+
+.header {
+  font-weight: bold;
+  color: blue;
+  padding: 5;
+}
