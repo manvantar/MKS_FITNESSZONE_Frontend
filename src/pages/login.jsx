@@ -104,7 +104,7 @@ const Login = ({ handleChange }) => {
       <Grid className="formStyle">
         <Paper className="paperStyle">
           <h1 align="center" className="header">
-            EMPLOYEE PAYROLL
+            MKS FITNESS ZONE
           </h1>
           <Grid align="center">
             <Avatar data-testid="avatar" style={avatarStyle}>

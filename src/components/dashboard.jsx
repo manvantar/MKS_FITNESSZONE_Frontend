@@ -297,7 +297,7 @@ export default function PersistentDrawerLeft() {
             <MenuIcon data-testid="MenuIcon"/>
           </IconButton>
           <Typography variant="h7" className="heading" data-testid="Header">
-            EMPLOYEE PAYROLL
+            MKS FITNESS MEMBERS MANAGEMENT
           </Typography>
           <Grid container alignItems="center">
             <Grid item sm></Grid>
@@ -398,7 +398,7 @@ export default function PersistentDrawerLeft() {
       </main>
       <Popup
         data-testid="EmployeeForm"
-        title="Employee Form"
+        title="Client Form"
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >

@@ -1,8 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 import Controls from "../components/controls/Controls";
 import { useForm, Form } from "../components/employeeForm/useForm";
-
+import { DatePicker, KeyboardDatePicker } from "@material-ui/pickers"
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import DateFnsUtils from '@date-io/date-fns';
+// import 'date-fns';
+// import {
+//   MuiPickersUtilsProvider,
+//   KeyboardDatePicker,
+// } from '@material-ui/pickers';
+// import { DatePicker, Space } from 'antd'; 
+// const { RangePicker } = DatePicker;
 const initialFValues = {
   // firstName: "",
   // lastName: "",
@@ -14,15 +24,15 @@ const initialFValues = {
   emailId: "",
   firstName: "",
   lastName: "",
+  mobile: "",
   address: "",
   emergency_contact:"",
   role: "",
   type: "",
   billing_amount: "",
-  address: "",
-  mobile: "",
-  membership_startdate:"",
-  membership_enddate: "",
+
+  membership_startdate:new Date(),
+  membership_enddate: "01/01/2021",
   body_weight: "",
   body_goal_type: "",
 };
@@ -34,7 +44,7 @@ const initialFValues = {
  */
 export default function EmployeeForm(props) {
   const { addOrEdit, recordForEdit } = props;
-
+  const [selectedDate, handleDateChange] = useState(new Date());
   /**
    * @description Validates the form
    * @return Error if values have any error
@@ -105,6 +115,7 @@ export default function EmployeeForm(props) {
   }, [recordForEdit]);
 
   return (
+    <div>
     <Form data-testid="Form" onSubmit={handleSubmit}>
       <Grid container>
         <Grid item xs={6}>
@@ -140,16 +151,24 @@ export default function EmployeeForm(props) {
             error={errors.mobile}
             data-testid="Mobile"
           />
-        </Grid>
-        <Grid item xs={6}>
-          <Controls.Input
-            label="Address"
+           <Controls.Input
+            label="Emergency Contact"
+            name="emergency_contact"
+            value={values.emergency_contact}
+            onChange={handleInputChange}
+            error={errors.mobile}
+            data-testid="Mobile"
+          />
+           <Controls.Input
+            label="Address(Area in Bengaluru)"
             name="address"
             value={values.address}
             onChange={handleInputChange}
             error={errors.address}
             data-testid="Address"
           />
+        </Grid>
+        <Grid item xs={6}>
           <Controls.Input
             label="Role"
             name="role"
@@ -158,27 +177,99 @@ export default function EmployeeForm(props) {
             data-testid="Role"
           />
           <Controls.Input
-            name="Type"
-            label="type"
+            label="Type"
+            name="type"
             value={values.type}
             onChange={handleInputChange}
             error={errors.type}
             data-testid="Type"
           />
-          <Controls.Input
-            name="Billing_Amount"
-            label="billing_amount"
+            <Controls.Input
+            label="Billing_Amount"
+            name="billing_amount"
             value={values.billing_amount}
             onChange={handleInputChange}
             error={errors.billing_amount}
             data-testid="Billing_Amount"
           />
+               
+
+          {/* <DatePicker
+            selected={values.date} 
+            onChange={(e) => {
+            //   // values.membership_startdate('date', e);
+            //   // membership_startdate('date');
+            //   }}
+            // className="form-control"
+            // value={values.membership_startdate}
+            // minDate={values.membership_startdate}
+            // customInput={
+            //   <input
+            //     type="text"
+            //     id="validationCustom01"
+            //     placeholder="First name"
+            //   />
+            // }
+          />
+          {/* <div>
+          <label for="start">Start date:</label>
+          <input type="date" id="start" name="trip-start"
+       value={values.membership_startdate}
+       min="2021-01-01" max="2022-12-31">
+       </input>
+  </div>
+  <div>
+          <label for="start">End Data:</label>
+          <input type="date" id="end" name="membership-start"
+              value={values.membership_enddate} ></input>
+        </div>
+          {/* <input type="date" ><input/> */}
+                       {/* <Controls.DatePicker
+                        // name="hireDate"
+                        // label="Hire Date"
+                        // value={values.hireDate}
+                        onChange={handleInputChange}
+                    /> */}
+            {/* <Controls.Input
+            label="MemberShip_Start_Date"
+            name="membership_startdate"
+            value={values.membership_startdate}
+            onChange={handleInputChange}
+            error={errors.membership_startdate}
+            data-testid="Membership_startdate"
+          />
+            <Controls.Input
+            label="MemberShip_End_Date"
+            name="membership_enddate"
+            value={values.membership_enddate}
+            onChange={handleInputChange}
+            error={errors.membership_enddate}
+            data-testid="membership_enddate"
+          /> */} 
           <div>
             <Controls.Button data-testid="Submit" type="submit" text="Submit" />
             <Controls.Button data-testid="Reset" text="Reset" color="default" onClick={resetForm} />
           </div>
         </Grid>
       </Grid>
+      
+
     </Form>
+    {/* <KeyboardDatePicker
+        autoOk
+        variant="inline"
+        inputVariant="outlined"
+        label="With keyboard"
+        format="MM/dd/yyyy"
+        value={values.membership_startdate}
+        InputAdornmentProps={{ position: "start" }}
+        onChange={date => handleDateChange(date)}
+      /> */}
+    {/* <Space direction="vertical"> */}
+    {/* <DatePicker
+          // value={}
+           onChange={handleInputChange} />
+         </Space> */}
+         </div>
   );
 }
