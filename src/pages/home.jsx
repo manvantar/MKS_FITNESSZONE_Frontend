@@ -20,22 +20,31 @@ import AddIcon from "@material-ui/icons/Add";
 import ListIcon from "@material-ui/icons/List";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import "../scss/dashboard.scss";
+import "../scss/home.scss";
 import { Grid, Badge } from "@material-ui/core";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 // import { useHistory } from "react-router";
 import { useHistory } from "react-router-dom";
-import EmployeeForm from "./EmployeeForm.jsx";
-import Card from "./card.jsx";
-import Popup from "./employeeForm/Popup";
+import EmployeeForm from "../components/EmployeeForm";
+import Card from "../components/card.jsx";
+import Popup from "../components/employeeForm/Popup";
 import employeeService from "../services/employee";
-import Notification from "./employeeForm/Notification";
+import Notification from "../components/employeeForm/Notification";
 import auth from "../services/auth";
-
+import Login from "./login";
+import { Dialog, DialogContent } from "@material-ui/core";
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
+  dialogWrapper: {
+    padding: theme.spacing(2),
+    position: "absolute",
+    top: theme.spacing(5),
+  },
+  dialogTitle: {
+    paddingRight: "0px",
+  },
   appBar: {
     display: "flex",
     alignItems: "left",
@@ -72,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginLeft: 200,
-    
   },
 }));
 
@@ -100,27 +108,20 @@ export default function PersistentDrawerLeft() {
   /**
    * @description handle drawerOpen, when its called sets setOPen variable to true
    */
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  /**
-   * @description handle drawerClose, when its called sets setOPen variable to false
-   */
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   /**
    * @description handle Logout button, when its called- clears Local storage and pushes the page to Login
    */
-  const handleLogout = () => {
+  const handleLogin = () => {
     localStorage.removeItem("token");
     auth.logout(() => {
-      history.push("/");
+      history.push("/login");
     });
   };
 
+  const handleAttendance = () => {
+    setOpenPopup(true);
+  };
   /**
    * @description handle Lisy button, when its fetches the Employee data from Backend
    * @returns SnakBar with success or failure message
@@ -132,21 +133,20 @@ export default function PersistentDrawerLeft() {
         if (res.data.success === true) {
           setEmployeeRecords((employeeRecords = res.data.EmployeeData));
         } else {
-              setNotify({
-              isOpen: true,
-              message: "Something went wrong",
-              type: "error",
-            });
-        }
-      })
-      .catch((error) => {
           setNotify({
             isOpen: true,
-            message: "Something went wrong " + error.message,
+            message: "Something went wrong",
             type: "error",
           });
         }
-      );
+      })
+      .catch((error) => {
+        setNotify({
+          isOpen: true,
+          message: "Something went wrong " + error.message,
+          type: "error",
+        });
+      });
   };
 
   /**
@@ -288,87 +288,37 @@ export default function PersistentDrawerLeft() {
         data-testid="AppBar"
       >
         <Toolbar data-testid="Toolbar">
-          <IconButton
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-            data-testid="IconButton"
-          >
-            <MenuIcon data-testid="MenuIcon"/>
-          </IconButton>
           <Typography variant="h7" className="heading" data-testid="Header">
             MKS FITNESS MEMBERS MANAGEMENT
           </Typography>
           <Grid container alignItems="center">
             <Grid item sm></Grid>
-            <Grid item>
-              <IconButton >
-                <Badge badgeContent={1} color="secondary">
-                  <NotificationsNoneIcon fontSize="small" data-testid="NotificationIcon" />
-                </Badge>
-              </IconButton>
-              <IconButton>
-                <Badge badgeContent={1} color="primary">
-                  <ChatBubbleOutlineIcon fontSize="small" data-testid="ChatBubbleOutlineIcon"/>
-                </Badge>
-              </IconButton>
+            <Grid item sm>
               <Button
                 variant="contained"
                 type="submit"
-                onClick={handleLogout}
+                onClick={handleAttendance}
+                color="secondary"
+                data-testid="MARK ATTENDANCE"
+              >
+                MARK ATTENDANCE
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                type="submit"
+                onClick={handleLogin}
                 color="primary"
                 data-testid="logout"
               >
-                logout
+                LOGIN
               </Button>
             </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className="drawer"
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        data-testid="Drawer"
-      >
-        <div className="drawerHeader">
-          <IconButton onClick={handleDrawerClose} data-testid="DrawerCloser">
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider data-testid="Divider"/>
-        <List>
-          <ListItem button key="List" >
-            <ListItemIcon>{<ListIcon data-testid="ListElement"/>}</ListItemIcon>
-            <ListItemText type="submit" onClick={handleList} primary="List Members" />
-          </ListItem>
-          <ListItem button key="Add">
-            <ListItemIcon>{<AddIcon data-testid="AddElement"/>}</ListItemIcon>
-            <ListItemText
-              onClick={() => {
-                setOpenPopup(true);
-                setRecordForEdit(null);
-                setOperation("add");
-              }}
-              primary="Add Member"
-            />
-          </ListItem>
-          <ListItem button key="Edit">
-            <ListItemIcon>{<AddIcon data-testid="EditElement" />}</ListItemIcon>
-            <ListItemText primary="Register For User" />
-          </ListItem>
 
-        </List>
-      </Drawer>
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open,
@@ -396,13 +346,17 @@ export default function PersistentDrawerLeft() {
       </main>
       <Popup
         data-testid="EmployeeForm"
-        title="Client Form"
+        title="ATTENDANCE FORM"
         openPopup={openPopup}
         setOpenPopup={setOpenPopup}
       >
-        <EmployeeForm  recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
+        
       </Popup>
-      <Notification data-testid="SnackBar" notify={notify} setNotify={setNotify} />
+      <Notification
+        data-testid="SnackBar"
+        notify={notify}
+        setNotify={setNotify}
+      />
     </div>
   );
 }

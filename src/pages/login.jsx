@@ -57,18 +57,26 @@ const Login = ({ handleChange }) => {
       const credentials = {
         emailId: values.email,
         password: values.password,
-        // email: 'elanuser1703',
-        // pass: 'ElanPro@1234'
-
       };
       user
         .login(credentials)
         .then((res) => {
           if (res.data.success === true) {
             localStorage.setItem("token", res.data.token);
-            auth.login(() => {
-              history.push("/dashboard");
+            setNotify({
+              isOpen: true,
+              message: "Login Successfull",
+              type: "success",
             });
+            const  stateChange= (newState)=> {
+              setTimeout(function () {
+                auth.login(() => {
+                  history.push("/dashboard");
+                });
+            }, 2000);
+            }
+            stateChange();
+            
           } else {
             setNotify({
               isOpen: true,
@@ -164,8 +172,8 @@ const Login = ({ handleChange }) => {
           </Formik>
           <Typography align="center">
             {" "}
-            Do not have an account ?
-            <Link data-testid="link" to="/register">Register</Link>
+           Go back to Attendance ?
+            <Link data-testid="link" to="/">HOME PAGE</Link>
           </Typography>
         </Paper>        
       </Grid>

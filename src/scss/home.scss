@@ -1,0 +1,16 @@
+.Header {
+  background: linear-gradient(90deg, rgba(182, 9, 9, 0.158), rgb(239, 245, 224) 100%);
+}
+
+.heading {
+  color: rgb(8, 0, 0);
+  font-size: large;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.drawerHeader {
+  display: "flex";
+  align-items: "center";
+  justify-content: "flex-end";
+}
